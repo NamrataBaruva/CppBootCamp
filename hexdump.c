@@ -6,7 +6,7 @@
 #define LINE_LENGTH 16
 
 bool isStartOfLine(size_t bytesRead) {
-    return bytesRead % LINE_LENGTH == 0;
+        return bytesRead % LINE_LENGTH == 0;
 }
 
 bool isEndOfLine(size_t bytesRead) {
@@ -37,7 +37,7 @@ char toASCII(int halfbyte) {
 
 int main(void) {
     size_t bytesRead = 0;
-    size_t lineOffset = 0;
+    size_t lineOffset = 0;//hello\nhello\0
     for (int c; (c = getchar()) != EOF; bytesRead++) {
         if (isStartOfLine(bytesRead)) {
             lineOffset = 0;
@@ -52,8 +52,8 @@ int main(void) {
             line[lineOffset++] = ' ';
         }
         line[lineOffset++] = ' ';
-        line[lineOffset++] = toASCII((c & 0xF0) >> 4);
-        line[lineOffset++] = toASCII((c & 0x0F) >> 0);
+        line[lineOffset++] = toASCII((c & 0xF0) >> 4);   //6
+        line[lineOffset++] = toASCII((c & 0x0F) >> 0);  // 8
 
         if (isEndOfLine(bytesRead))
             puts(line);
@@ -73,4 +73,5 @@ int main(void) {
     line[lineOffset++] = toASCII((bytesRead & 0x0000000F) >>  0);
     line[lineOffset++] = '\0';
     puts(line);
+    return EXIT_SUCCESS;
 }
