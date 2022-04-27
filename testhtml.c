@@ -33,7 +33,7 @@ int main(void)
 
     char *headtxt = "<?xml version='1.0'?>\n"    // FOR HEAD TEXT
                    "<!DOCTYPE html>\n"
-                   "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\">\n "
+                   "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\">\n"
                    "<head>\n"
                    "<title>Hex Dump</title>\n"
                    "</head>\n"
@@ -44,12 +44,13 @@ int main(void)
                    "<tr><th scope=\"col\">Offset</th><th scope=\"col\">Data</th></tr>\n"
                    "</thead>\n"
                    "<tbody>\n";
-    printf("%s", headtxt);
+    //printf("%s", headtxt);
+    fputs(headtxt, stdout);
     for (int c; (c = getchar()) != EOF; bytesRead++)
     {
         if (isStartOfLine(bytesRead))
         {
-            ptr = &line[14]; // FOR START SHIFT
+            ptr = &line[14]; // FOR START SHIFT  ptr =line + 14
             for (int shift = 28; shift >= 0; shift -= 4) // i-=4
             {
                 *ptr++ = toASCII((bytesRead >> shift) & 0xF);
@@ -71,10 +72,12 @@ int main(void)
     if (bytesRead % 16 != 0)
     {   
         *ptr++ = '\0';
-        printf("%s",line);
-        printf("%s", "</code></td></tr>\n");  // FOR EOF, C<16 
-        printf("%s","<tr><td><code>"); 
+        //printf("%s",line);
+        fputs(line, stdout);
+       // printf("%s", "</code></td></tr>\n");  // FOR EOF, C<16   
+        fputs("</code></td></tr>\n", stdout);     
     }
+    
     ptr = line;
 
     for (int shift = 28; shift >= 0; shift -= 4) // i-=4
@@ -82,8 +85,12 @@ int main(void)
         *ptr++ = toASCII((bytesRead >> shift) & 0xF);
     }
     *ptr++ = '\0';
-    printf("%s",line);
-    printf("%s", "</code></td></tr>\n");  //  FOR LAST LINE
+    //printf("%s","<tr><td><code>"); 
+    //printf("%s",line);
+    //printf("%s", "</code></td></tr>\n");  //  FOR LAST LINE
+    fputs("<tr><td><code>", stdout);
+    fputs(line, stdout);
+    fputs("</code></td></tr>\n", stdout);
 
     char *tailtxt = "</tbody>\n"
                     "</body>\n"    //FOR TAIL TEXT
