@@ -2,12 +2,18 @@
 #include <stdlib.h>
 #include <string.h>
 
+int ReadDegree()
+{
+
+}
+
+
 int ReadIp(char Input[])
 {
    char unit1;
-    if (((Input[1]) == 'C') || (0 == strcmp(Input, "c")) || (0 == strcmp(Input, "C")) || (0 == strcmp(Input, "celsius")) || (0 == strcmp(Input, "Celsius")))
+    if ((0 == strcmp(Input, "c")) || (0 == strcmp(Input, "C")) || (0 == strcmp(Input, "celsius")) || (0 == strcmp(Input, "Celsius")))
          {
-            // (Input[1]) == 'C') takes care of ° C   ((Input[1]) == 'C')            
+            // (Input[1]) == 'C') takes care of ° C   ((Input[1]) == 'C')         ((Input[1]) == 'C') ||     
             unit1 = 'C';
          }
          else if (((Input[1]) == 'F') || (0 == strcmp(Input, "f")) || (0 == strcmp(Input, "F")) || (0 == strcmp(Input, "fahrenheit")) || (0 == strcmp(Input, "Fahrenheit")))
@@ -121,7 +127,7 @@ int TempCalcs(int ConvertType, int IpTemp)
 int main(int argc, char *argv[])
 { 
    char *unit[3];
-     
+    char u1;
    if (argc < 3)
    {
       fprintf(stderr, "%s: error: Not enough arguments.\nUsage: temp_convert INPUT_SCALE OUTPUT_SCALE [TEMPERATURE]...\n", argv[0]);
@@ -130,7 +136,18 @@ int main(int argc, char *argv[])
 
    if (argc >= 3)
    {
-      char u1= ReadIp(argv[1]);
+      int ascii1 =argv[1][0];  // int of °
+      int ascii2 =argv[1][1];  // int of C
+     if((ascii1 =-80) && (ascii2 = 67))
+     {
+       u1= ReadIp("C");
+     }
+     else{
+         u1= ReadIp(argv[1]);
+     }
+     
+
+     
       char u2= ReadIp(argv[2]);     
 
       if (argc == 3) // recognised scale but without temp values
@@ -139,7 +156,7 @@ int main(int argc, char *argv[])
       }
 
       int ConvertType = GetConvertType(u1,u2);
-      printf("%d", ConvertType);
+     // printf("%d", ConvertType);
 
       for (int ip = 3; (ip < argc); ip++)
       {
